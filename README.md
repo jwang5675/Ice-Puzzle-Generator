@@ -28,7 +28,7 @@ Some important notes to the algorithm:
 
 Some example inputs and outputs to the algorithm:
 
-MapGenerator.generateMap(20, 25) can output an easy maze from (s) to (e) with 3 steps: URU
+### MapGenerator.generateMap(20, 25) can output an easy maze from (s) to (e) with 3 steps: URU
 
     OOOOOOOOOOOOOOOOOOOOOOOeO  
     O.......................O  
@@ -51,51 +51,51 @@ MapGenerator.generateMap(20, 25) can output an easy maze from (s) to (e) with 3 
     O..........O...OO.......O  
     OOOOsOOOOOOOOOOOOOOOOOOOO  
 
-MapGenerator.generateMap(20, 25) can output a medium maze from (s) to (e) with 11 steps: ULDRURULULU
+### MapGenerator.generateMap(20, 25) can output a medium maze from (s) to (e) with 11 steps: ULDRURULULU
 
-OOeOOOOOOOOOOOOOOOOOOOOOO  
-OO............O..O....O.O  
-O.OO.....OO.....O.O.....O  
-O...O.O......O.......O..O  
-O............O.O........O  
-O........O........O..O..O  
-O........O...........O..O  
-O......OO...............O  
-O.......................O  
-O.O.O....O...O.O........O  
-O..O..O........O....OOO.O  
-O.O.....................O  
-O.......O..O......O.....O  
-O.....OO............O...O  
-O...OO..O...O.........O.O  
-O.............O...O....OO  
-OO.OOO..O...............O  
-O.......................O  
-O..........OO...........O  
-OOOOOOOOOOOOOOOsOOOOOOOOO  
+    OOeOOOOOOOOOOOOOOOOOOOOOO  
+    OO............O..O....O.O  
+    O.OO.....OO.....O.O.....O  
+    O...O.O......O.......O..O  
+    O............O.O........O  
+    O........O........O..O..O  
+    O........O...........O..O  
+    O......OO...............O  
+    O.......................O  
+    O.O.O....O...O.O........O  
+    O..O..O........O....OOO.O  
+    O.O.....................O  
+    O.......O..O......O.....O  
+    O.....OO............O...O  
+    O...OO..O...O.........O.O  
+    O.............O...O....OO  
+    OO.OOO..O...............O  
+    O.......................O  
+    O..........OO...........O  
+    OOOOOOOOOOOOOOOsOOOOOOOOO  
 
-MapGenerator.generateMap(20, 25) can output a hard maze from (s) to (e) that takes at minimum 17 steps to solve..... Can you find a solution for this puzzle? :)
+### MapGenerator.generateMap(20, 25) can output a hard maze from (s) to (e) that takes at minimum 17 steps to solve..... Can you find a solution for this puzzle? :)
 
-OOeOOOOOOOOOOOOOOOOOOOOOO  
-O...........O..OO.......O  
-O..O..O..O.O..O.........O  
-O...O............OO.....O  
-O........O.....O....O...O  
-O....O..........O...O.OOO  
-O..O..O....O.O..O.....O.O  
-OOO...................O.O  
-OO.O.O.........O......O.O  
-O....O........O...O.....O  
-O..O....O....O....O..O..O  
-O...................O...O  
-O.O..O...O....O.....O...O  
-O...........O...........O  
-O.O.....OO.........O....O  
-OO..................OO..O  
-OO..OO....O.....O...O...O  
-O...........O.........O.O  
-O..OOO..................O  
-OOOOOOOOOsOOOOOOOOOOOOOOO  
+    OOeOOOOOOOOOOOOOOOOOOOOOO  
+    O...........O..OO.......O  
+    O..O..O..O.O..O.........O  
+    O...O............OO.....O  
+    O........O.....O....O...O  
+    O....O..........O...O.OOO  
+    O..O..O....O.O..O.....O.O  
+    OOO...................O.O  
+    OO.O.O.........O......O.O  
+    O....O........O...O.....O  
+    O..O....O....O....O..O..O  
+    O...................O...O  
+    O.O..O...O....O.....O...O  
+    O...........O...........O  
+    O.O.....OO.........O....O  
+    OO..................OO..O  
+    OO..OO....O.....O...O...O  
+    O...........O.........O.O  
+    O..OOO..................O  
+    OOOOOOOOOsOOOOOOOOOOOOOOO  
 
 ## Rendering 
 
