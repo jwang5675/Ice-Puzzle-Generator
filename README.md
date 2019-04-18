@@ -74,7 +74,7 @@ Some example inputs and outputs to the algorithm:
     O..........OO...........O  
     OOOOOOOOOOOOOOOsOOOOOOOOO  
 
-### MapGenerator.generateMap(20, 25) can output a hard maze from (s) to (e) that takes at minimum 17 steps to solve..... Can you find a solution for this puzzle? :)
+### MapGenerator.generateMap(20, 25) can output a hard maze from (s) to (e) with 17 steps: URDLURULDLDLDLDRU
 
     OOeOOOOOOOOOOOOOOOOOOOOOO  
     O...........O..OO.......O  
