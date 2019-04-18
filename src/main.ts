@@ -46,7 +46,7 @@ function loadScene() {
 
   // Setup Game Engine Here
   let mapGenerator: MapGenerator = new MapGenerator;
-  mapGenerator.generateMap(10, 15);
+  mapGenerator.generateMap(20, 25);
   mapGenerator.printCurrentMap();
 }
 

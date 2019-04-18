@@ -28,6 +28,52 @@ Some important notes to the algorithm:
 
 Some example inputs and outputs to the algorithm:
 
+MapGenerator.generateMap(20, 25) can output an easy maze from (s) to (e) with 3 steps: URU
+
+OOOOOOOOOOOOOOOOOOOOOOOeO
+O.......................O
+O.......O..O............O
+O..O....O....O.O........O
+O....O............O...O.O
+O........O.O...O....O...O
+O................OO.....O
+O......................OO
+0.............O........OO
+O..O........O....O...O.OO
+O.............O.......O.O
+O.........O...O..O......O
+O.....................O.O
+O................O..OOOOO
+OO.............O....O...O
+O......O........OO...O..O
+O.O............OO....O.OO
+O.....................O.O
+O..........O...OO.......O
+OOOOsOOOOOOOOOOOOOOOOOOOO
+
+MapGenerator.generateMap(20, 25) can output a hard maze from (s) to (e) with 11 steps: ULDRURULULU
+
+OOeOOOOOOOOOOOOOOOOOOOOOO
+OO............O..O....O.O
+O.OO.....OO.....O.O.....O
+O...O.O......O.......O..O
+O............O.O........O
+O........O........O..O..O
+O........O...........O..O
+O......OO...............O
+O.......................O
+O.O.O....O...O.O........O
+O..O..O........O....OOO.O
+O.O.....................O
+O.......O..O......O.....O
+O.....OO............O...O
+O...OO..O...O.........O.O
+O.............O...O....OO
+OO.OOO..O...............O
+O.......................O
+O..........OO...........O
+OOOOOOOOOOOOOOOsOOOOOOOOO
+
 ## Rendering 
 
 TODO: Implement instance rendering of ice blocks and boulders to generate world and render player spirits with textures
