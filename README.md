@@ -4,7 +4,7 @@
 
 This repo contains the base code for a simple ice puzzle generator. The goal of the ice puzzle game is to reach the ending destination. The ice puzzle game works by allowing players to move in a single direction until they hit a boulder as if they were sliding on ice. After the player hits a boulder, they will be able to move in another direction. 
 
-Motivation: https://www.youtube.com/watch?v=hoCfdfRttT8
+Motivation and Gameplay: https://www.youtube.com/watch?v=hoCfdfRttT8
 
 [![](img/motivation.png)](https://www.youtube.com/watch?v=hoCfdfRttT8)
 
@@ -51,7 +51,7 @@ O.....................O.O
 O..........O...OO.......O
 OOOOsOOOOOOOOOOOOOOOOOOOO
 
-MapGenerator.generateMap(20, 25) can output a hard maze from (s) to (e) with 11 steps: ULDRURULULU
+MapGenerator.generateMap(20, 25) can output a medium maze from (s) to (e) with 11 steps: ULDRURULULU
 
 OOeOOOOOOOOOOOOOOOOOOOOOO
 OO............O..O....O.O
@@ -73,6 +73,29 @@ OO.OOO..O...............O
 O.......................O
 O..........OO...........O
 OOOOOOOOOOOOOOOsOOOOOOOOO
+
+MapGenerator.generateMap(20, 25) can output a hard maze from (s) to (e) that takes at minimum 17 steps to solve..... Can you find a solution for this puzzle? :)
+
+OOeOOOOOOOOOOOOOOOOOOOOOO
+O...........O..OO.......O
+O..O..O..O.O..O.........O
+O...O............OO.....O
+O........O.....O....O...O
+O....O..........O...O.OOO
+O..O..O....O.O..O.....O.O
+OOO...................O.O
+OO.O.O.........O......O.O
+O....O........O...O.....O
+O..O....O....O....O..O..O
+O...................O...O
+O.O..O...O....O.....O...O
+O...........O...........O
+O.O.....OO.........O....O
+OO..................OO..O
+OO..OO....O.....O...O...O
+O...........O.........O.O
+O..OOO..................O
+OOOOOOOOOsOOOOOOOOOOOOOOO
 
 ## Rendering 
 
