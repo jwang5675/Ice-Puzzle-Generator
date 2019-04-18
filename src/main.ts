@@ -8,8 +8,9 @@ import Camera from './Camera';
 import {setGL} from './globals';
 import ShaderProgram, {Shader} from './rendering/gl/ShaderProgram';
 
-// Define an object with application parameters and button callbacks
-// This will be referred to by dat.GUI's functions that add GUI elements.
+import MapGenerator from './game/MapGenerator';
+
+
 const controls = {
 };
 
@@ -23,11 +24,6 @@ function loadScene() {
   screenQuad = new ScreenQuad();
   screenQuad.create();
 
-  // Set up instanced rendering data arrays here.
-  // This example creates a set of positional
-  // offsets and gradiated colors for a 100x100 grid
-  // of squares, even though the VBO data for just
-  // one square is actually passed to the GPU
   let offsetsArray = [];
   let colorsArray = [];
   let n: number = 100.0;
@@ -46,7 +42,12 @@ function loadScene() {
   let offsets: Float32Array = new Float32Array(offsetsArray);
   let colors: Float32Array = new Float32Array(colorsArray);
   square.setInstanceVBOs(offsets, colors);
-  square.setNumInstances(n * n); // grid of "particles"
+  square.setNumInstances(n * n);
+
+  // Setup Game Engine Here
+  let mapGenerator: MapGenerator = new MapGenerator;
+  mapGenerator.generateMap(10, 15);
+  mapGenerator.printCurrentMap();
 }
 
 function main() {
@@ -58,22 +59,19 @@ function main() {
   stats.domElement.style.top = '0px';
   document.body.appendChild(stats.domElement);
 
-  // Add controls to the gui
+  // Add controls to the gui and get canvas and webgl context
   const gui = new DAT.GUI();
-
-  // get canvas and webgl context
   const canvas = <HTMLCanvasElement> document.getElementById('canvas');
   const gl = <WebGL2RenderingContext> canvas.getContext('webgl2');
   if (!gl) {
     alert('WebGL 2 not supported!');
   }
-  // `setGL` is a function imported above which sets the value of `gl` in the `globals.ts` module.
-  // Later, we can import `gl` from `globals.ts` to access it
   setGL(gl);
 
   // Initial call to load scene
   loadScene();
 
+  // Setup Camera and shader programs
   const camera = new Camera(vec3.fromValues(50, 50, 10), vec3.fromValues(50, 50, 0));
 
   const renderer = new OpenGLRenderer(canvas);
@@ -99,29 +97,28 @@ function main() {
     flat.setTime(time++);
     gl.viewport(0, 0, window.innerWidth, window.innerHeight);
     renderer.clear();
-    renderer.render(camera, flat, [screenQuad]);
+    renderer.render(camera, flat, [
+      //screenQuad,
+    ]);
     renderer.render(camera, instancedShader, [
-      square,
+      //square,
     ]);
     stats.end();
 
-    // Tell the browser to call `tick` again whenever it renders a new frame
     requestAnimationFrame(tick);
   }
 
-  window.addEventListener('resize', function() {
+  // Setup window resize
+  let resize = function() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     camera.setAspectRatio(window.innerWidth / window.innerHeight);
     camera.updateProjectionMatrix();
     flat.setDimensions(window.innerWidth, window.innerHeight);
-  }, false);
+  }
+  window.addEventListener('resize', resize, false);
+  resize();
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  camera.setAspectRatio(window.innerWidth / window.innerHeight);
-  camera.updateProjectionMatrix();
-  flat.setDimensions(window.innerWidth, window.innerHeight);
-
-  // Start the render loop
+  // Start render loop
   tick();
 }
 
