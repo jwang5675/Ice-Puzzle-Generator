@@ -30,26 +30,26 @@ Some example inputs and outputs to the algorithm:
 
 MapGenerator.generateMap(20, 25) can output an easy maze from (s) to (e) with 3 steps: URU
 
-OOOOOOOOOOOOOOOOOOOOOOOeO  
-O.......................O  
-O.......O..O............O  
-O..O....O....O.O........O  
-O....O............O...O.O  
-O........O.O...O....O...O  
-O................OO.....O  
-O......................OO  
-0.............O........OO  
-O..O........O....O...O.OO  
-O.............O.......O.O  
-O.........O...O..O......O  
-O.....................O.O  
-O................O..OOOOO  
-OO.............O....O...O  
-O......O........OO...O..O  
-O.O............OO....O.OO  
-O.....................O.O  
-O..........O...OO.......O  
-OOOOsOOOOOOOOOOOOOOOOOOOO  
+    OOOOOOOOOOOOOOOOOOOOOOOeO  
+    O.......................O  
+    O.......O..O............O  
+    O..O....O....O.O........O  
+    O....O............O...O.O  
+    O........O.O...O....O...O  
+    O................OO.....O  
+    O......................OO  
+    0.............O........OO  
+    O..O........O....O...O.OO  
+    O.............O.......O.O  
+    O.........O...O..O......O  
+    O.....................O.O  
+    O................O..OOOOO  
+    OO.............O....O...O  
+    O......O........OO...O..O  
+    O.O............OO....O.OO  
+    O.....................O.O  
+    O..........O...OO.......O  
+    OOOOsOOOOOOOOOOOOOOOOOOOO  
 
 MapGenerator.generateMap(20, 25) can output a medium maze from (s) to (e) with 11 steps: ULDRURULULU
 
