@@ -6,6 +6,7 @@ export default class MapGenerator {
 
 	// Last map generated from previous generateMap() call
 	currentMap: string[][];
+	start: any;
 
 	constructor() {
 		this.rockThreshold = 0.125;
@@ -164,20 +165,27 @@ export default class MapGenerator {
 			let map: string[][] = this.getRandomMap(x, y);
 
 			// Generates random starting and ending point
+			if (Math.random() < 0.5) {
+
+			} else {
+
+			}
 			let start: number = Math.floor(Math.random() * y);
+			map[0][start] = 'S';
+
 			let end: number = Math.floor(Math.random() * y);
-			map[x - 1][start] = 's';
-			map[0][end] = 'e';
+			map[x - 1][end] = 'E';
 
 			// Check if the map is valid by running a BFS on the map
 			let startingPoint: any = {
-				'x': x - 1,
+				'x': 0,
 				'y': start,
 				'steps': 0,
 			};
+			this.start = startingPoint;
 
 			let endingPoint: any = {
-				'x': 0,
+				'x': x - 1,
 				'y': end,
 			};
 
@@ -202,7 +210,7 @@ export default class MapGenerator {
 					this.currentMap = map;
 					console.log("THIS MAP IS POSSIBLE TO SOLVE WITH " + currentPoint['steps'] + " STEPS");
 					createdNewMap = true;
-					break;
+					return currentPoint['steps'];
 				}
 
 				// Find all neighbors and add it to our queue
