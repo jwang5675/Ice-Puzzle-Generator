@@ -156,9 +156,25 @@ export default class MapGenerator {
 	}
 
 	/*
+	 * Checks map difficulty
+	 */
+	validDifficulty(difficulty: string, steps: number) {
+		if (difficulty == 'easy') {
+			return steps >= 3 && steps < 6;
+		}
+		if (difficulty == 'medium') {
+			return steps >= 6 && steps < 10;
+		}
+		if (difficulty == 'hard') {
+			return steps >= 10;
+		}
+		return true;
+	}
+
+	/*
 	 * Generates a map of size (x, y);
 	 */
-	generateMap(x: number, y: number) {
+	generateMap(x: number, y: number, difficulty: string): string[][] {
 		let createdNewMap: boolean = false;
 		// Tries to generate a solveable map
 		while (!createdNewMap) {
@@ -207,10 +223,13 @@ export default class MapGenerator {
 
 				// If we reach the end, possible to solve the map
 				if (currentPoint.x == endingPoint.x && currentPoint.y == endingPoint.y) {
+					if (!this.validDifficulty(difficulty, currentPoint['steps'])) {
+						return this.generateMap(x, y, difficulty);
+					} 
 					this.currentMap = map;
 					console.log("THIS MAP IS POSSIBLE TO SOLVE WITH " + currentPoint['steps'] + " STEPS");
 					createdNewMap = true;
-					return currentPoint['steps'];
+					return this.currentMap;
 				}
 
 				// Find all neighbors and add it to our queue
@@ -280,13 +299,6 @@ export default class MapGenerator {
 		} else {
 			console.log("current map is null");
 		}
-	}
-
-	/* 
-	 * Returns the last map generated from generateMap()
-	 */
-	getMap() {
-		return this.currentMap;
 	}
 
 }

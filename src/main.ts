@@ -7,12 +7,13 @@ import OpenGLRenderer from './rendering/gl/OpenGLRenderer';
 import Camera from './Camera';
 import {setGL} from './globals';
 import ShaderProgram, {Shader} from './rendering/gl/ShaderProgram';
-
 import MapGenerator from './game/MapGenerator';
 import Player from './game/Player'
 
 
 const controls = {
+  'Start Over': reset,
+  'Quit': quit,
 };
 
 let square: Square;
@@ -23,19 +24,23 @@ let camera: Camera;
 
 let mapGenerator: MapGenerator;
 let player: Player;
+let difficulty: string;
+let numMapsCompleted: number = 0;
 
-function loadScene() {
-  square = new Square();
-  square.create();
-  playerSprite = new Square;
-  playerSprite.create();
-  screenQuad = new ScreenQuad();
-  screenQuad.create();
+function reset() {
+  player.position = vec2.fromValues(mapGenerator.start.x, mapGenerator.start.y);
+}
 
+function quit() {
+  document.getElementById('game-wrapper').style.display = 'none';
+  document.getElementById('main-wrapper').style.display = '';
+  document.getElementById('maps-completed').innerHTML = "Number of maps completed: " + numMapsCompleted;
+}
+
+function loadGame() {
   // Set up Map Generator
   mapGenerator = new MapGenerator;
-  let numSteps: number = mapGenerator.generateMap(20, 25);
-  let map: string[][] = mapGenerator.getMap();
+  let map: string[][] = mapGenerator.generateMap(20, 25, difficulty);
 
   let offsetsArray = [];
   let colorsArray = [];
@@ -45,15 +50,15 @@ function loadScene() {
       offsetsArray.push(y);
       offsetsArray.push(0);
 
-      if (map[x][y] == "O") {
+      if (map[x][y] == 'O') {
         colorsArray.push(0.3);
         colorsArray.push(0.25);
         colorsArray.push(0.3);
-      } else if (map[x][y] == "S") {
+      } else if (map[x][y] == 'S') {
         colorsArray.push(1);
         colorsArray.push(0);
         colorsArray.push(0);
-      } else if (map[x][y] == "E") {
+      } else if (map[x][y] == 'E') {
         colorsArray.push(0);
         colorsArray.push(1);
         colorsArray.push(0);
@@ -74,6 +79,17 @@ function loadScene() {
   player = new Player(vec2.fromValues(mapGenerator.start.x, mapGenerator.start.y), map);
 }
 
+function loadScene() {
+  console.log('Number of map completed: ' + numMapsCompleted);
+  square = new Square();
+  square.create();
+  playerSprite = new Square;
+  playerSprite.create();
+  screenQuad = new ScreenQuad();
+  screenQuad.create();
+  loadGame();
+}
+
 function updateScene(resizeFunc: any) {
   // Render Player and Update Camera
   let offsets: Float32Array = new Float32Array([player.position[0], player.position[1], 0.1]);
@@ -81,8 +97,8 @@ function updateScene(resizeFunc: any) {
   playerSprite.setInstanceVBOs(offsets, colors);
   playerSprite.setNumInstances(1);
 
-  camera = new Camera(vec3.fromValues(player.position[0], player.position[1], 20), 
-                      vec3.fromValues(player.position[0], player.position[1], 0));
+  camera.set(vec3.fromValues(player.position[0], player.position[1], 20), 
+             vec3.fromValues(player.position[0], player.position[1], 0));
   resizeFunc();
 }
 
@@ -97,6 +113,8 @@ function main() {
 
   // Add controls to the gui and get canvas and webgl context
   const gui = new DAT.GUI();
+  gui.add(controls, 'Start Over');
+  gui.add(controls, 'Quit')
   const canvas = <HTMLCanvasElement> document.getElementById('canvas');
   const gl = <WebGL2RenderingContext> canvas.getContext('webgl2');
   if (!gl) {
@@ -109,7 +127,6 @@ function main() {
 
   // Setup Camera and shader programs
   camera = new Camera(vec3.fromValues(0, 0, 20), vec3.fromValues(0, 0, 0));
-
   const renderer = new OpenGLRenderer(canvas);
   renderer.setClearColor(0.2, 0.2, 0.2, 1);
   gl.enable(gl.DEPTH_TEST);
@@ -125,7 +142,7 @@ function main() {
     new Shader(gl.FRAGMENT_SHADER, require('./shaders/flat-frag.glsl')),
   ]);
 
-  // Setup window resize
+  // Setup Event Listeners
   let resize = function() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     camera.setAspectRatio(window.innerWidth / window.innerHeight);
@@ -134,13 +151,30 @@ function main() {
   }
   window.addEventListener('resize', resize, false);
   resize();
+  document.getElementById('easy').addEventListener('click', function(){
+    document.getElementById('main-wrapper').style.display = 'none';
+    document.getElementById('game-wrapper').style.display = '';
+    difficulty = 'easy';
+    loadGame();
+  });
+  document.getElementById('medium').addEventListener('click', function(){
+    document.getElementById('main-wrapper').style.display = 'none';
+    document.getElementById('game-wrapper').style.display = '';
+    difficulty = 'medium';
+    loadGame();
+  });
+  document.getElementById('hard').addEventListener('click', function(){
+    document.getElementById('main-wrapper').style.display = 'none';
+    document.getElementById('game-wrapper').style.display = '';
+    difficulty = 'hard';
+    loadGame();
+  });
 
   // This function will be called every frame
   function tick() {
     updateScene(resize);
 
     camera.update();
-
     stats.begin();
     instancedShader.setTime(time);
     flat.setTime(time++);
@@ -158,13 +192,18 @@ function main() {
     requestAnimationFrame(tick);
   }
 
-  // Start render loop
+  // Start Render Loop
   tick();
 
-  // Start Game Engine that updates every 0.3 seconds
+  // Start Game Engine 
   window.setInterval(function() {
-    player.tick();
-  }, 50);
+    if (player.completed) {
+      numMapsCompleted = numMapsCompleted + 1;
+      loadGame();
+    } else {
+      player.tick();
+    }
+  }, 20);
 }
 
 main();

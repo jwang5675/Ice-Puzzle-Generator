@@ -6020,7 +6020,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-const controls = {};
+const controls = {
+    'Start Over': reset,
+    'Quit': quit,
+};
 let square;
 let playerSprite;
 let screenQuad;
@@ -6028,17 +6031,20 @@ let time = 0.0;
 let camera;
 let mapGenerator;
 let player;
-function loadScene() {
-    square = new __WEBPACK_IMPORTED_MODULE_3__geometry_Square__["a" /* default */]();
-    square.create();
-    playerSprite = new __WEBPACK_IMPORTED_MODULE_3__geometry_Square__["a" /* default */];
-    playerSprite.create();
-    screenQuad = new __WEBPACK_IMPORTED_MODULE_4__geometry_ScreenQuad__["a" /* default */]();
-    screenQuad.create();
+let difficulty;
+let numMapsCompleted = 0;
+function reset() {
+    player.position = __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["c" /* vec2 */].fromValues(mapGenerator.start.x, mapGenerator.start.y);
+}
+function quit() {
+    document.getElementById('game-wrapper').style.display = 'none';
+    document.getElementById('main-wrapper').style.display = '';
+    document.getElementById('maps-completed').innerHTML = "Number of maps completed: " + numMapsCompleted;
+}
+function loadGame() {
     // Set up Map Generator
     mapGenerator = new __WEBPACK_IMPORTED_MODULE_9__game_MapGenerator__["a" /* default */];
-    let numSteps = mapGenerator.generateMap(20, 25);
-    let map = mapGenerator.getMap();
+    let map = mapGenerator.generateMap(20, 25, difficulty);
     let offsetsArray = [];
     let colorsArray = [];
     for (let x = 0; x < map.length; x++) {
@@ -6046,17 +6052,17 @@ function loadScene() {
             offsetsArray.push(x);
             offsetsArray.push(y);
             offsetsArray.push(0);
-            if (map[x][y] == "O") {
+            if (map[x][y] == 'O') {
                 colorsArray.push(0.3);
                 colorsArray.push(0.25);
                 colorsArray.push(0.3);
             }
-            else if (map[x][y] == "S") {
+            else if (map[x][y] == 'S') {
                 colorsArray.push(1);
                 colorsArray.push(0);
                 colorsArray.push(0);
             }
-            else if (map[x][y] == "E") {
+            else if (map[x][y] == 'E') {
                 colorsArray.push(0);
                 colorsArray.push(1);
                 colorsArray.push(0);
@@ -6076,13 +6082,23 @@ function loadScene() {
     // Setup Player Class
     player = new __WEBPACK_IMPORTED_MODULE_10__game_Player__["a" /* default */](__WEBPACK_IMPORTED_MODULE_0_gl_matrix__["c" /* vec2 */].fromValues(mapGenerator.start.x, mapGenerator.start.y), map);
 }
+function loadScene() {
+    console.log('Number of map completed: ' + numMapsCompleted);
+    square = new __WEBPACK_IMPORTED_MODULE_3__geometry_Square__["a" /* default */]();
+    square.create();
+    playerSprite = new __WEBPACK_IMPORTED_MODULE_3__geometry_Square__["a" /* default */];
+    playerSprite.create();
+    screenQuad = new __WEBPACK_IMPORTED_MODULE_4__geometry_ScreenQuad__["a" /* default */]();
+    screenQuad.create();
+    loadGame();
+}
 function updateScene(resizeFunc) {
     // Render Player and Update Camera
     let offsets = new Float32Array([player.position[0], player.position[1], 0.1]);
     let colors = new Float32Array([1, 1, 1, 1]);
     playerSprite.setInstanceVBOs(offsets, colors);
     playerSprite.setNumInstances(1);
-    camera = new __WEBPACK_IMPORTED_MODULE_6__Camera__["a" /* default */](__WEBPACK_IMPORTED_MODULE_0_gl_matrix__["d" /* vec3 */].fromValues(player.position[0], player.position[1], 20), __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["d" /* vec3 */].fromValues(player.position[0], player.position[1], 0));
+    camera.set(__WEBPACK_IMPORTED_MODULE_0_gl_matrix__["d" /* vec3 */].fromValues(player.position[0], player.position[1], 20), __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["d" /* vec3 */].fromValues(player.position[0], player.position[1], 0));
     resizeFunc();
 }
 function main() {
@@ -6095,6 +6111,8 @@ function main() {
     document.body.appendChild(stats.domElement);
     // Add controls to the gui and get canvas and webgl context
     const gui = new __WEBPACK_IMPORTED_MODULE_2_dat_gui__["GUI"]();
+    gui.add(controls, 'Start Over');
+    gui.add(controls, 'Quit');
     const canvas = document.getElementById('canvas');
     const gl = canvas.getContext('webgl2');
     if (!gl) {
@@ -6117,7 +6135,7 @@ function main() {
         new __WEBPACK_IMPORTED_MODULE_8__rendering_gl_ShaderProgram__["a" /* Shader */](gl.VERTEX_SHADER, __webpack_require__(74)),
         new __WEBPACK_IMPORTED_MODULE_8__rendering_gl_ShaderProgram__["a" /* Shader */](gl.FRAGMENT_SHADER, __webpack_require__(75)),
     ]);
-    // Setup window resize
+    // Setup Event Listeners
     let resize = function () {
         renderer.setSize(window.innerWidth, window.innerHeight);
         camera.setAspectRatio(window.innerWidth / window.innerHeight);
@@ -6126,6 +6144,24 @@ function main() {
     };
     window.addEventListener('resize', resize, false);
     resize();
+    document.getElementById('easy').addEventListener('click', function () {
+        document.getElementById('main-wrapper').style.display = 'none';
+        document.getElementById('game-wrapper').style.display = '';
+        difficulty = 'easy';
+        loadGame();
+    });
+    document.getElementById('medium').addEventListener('click', function () {
+        document.getElementById('main-wrapper').style.display = 'none';
+        document.getElementById('game-wrapper').style.display = '';
+        difficulty = 'medium';
+        loadGame();
+    });
+    document.getElementById('hard').addEventListener('click', function () {
+        document.getElementById('main-wrapper').style.display = 'none';
+        document.getElementById('game-wrapper').style.display = '';
+        difficulty = 'hard';
+        loadGame();
+    });
     // This function will be called every frame
     function tick() {
         updateScene(resize);
@@ -6145,12 +6181,18 @@ function main() {
         stats.end();
         requestAnimationFrame(tick);
     }
-    // Start render loop
+    // Start Render Loop
     tick();
-    // Start Game Engine that updates every 0.3 seconds
+    // Start Game Engine 
     window.setInterval(function () {
-        player.tick();
-    }, 50);
+        if (player.completed) {
+            numMapsCompleted = numMapsCompleted + 1;
+            loadGame();
+        }
+        else {
+            player.tick();
+        }
+    }, 20);
 }
 main();
 
@@ -13306,6 +13348,21 @@ class Camera {
         __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["d" /* vec3 */].cross(this.right, this.forward, this.up);
         __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["d" /* vec3 */].normalize(this.right, this.right);
     }
+    set(position, target) {
+        const canvas = document.getElementById('canvas');
+        this.controls = CameraControls(canvas, {
+            eye: position,
+            center: target,
+        });
+        __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["d" /* vec3 */].add(this.target, this.position, this.direction);
+        __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["b" /* mat4 */].lookAt(this.viewMatrix, this.controls.eye, this.controls.center, this.controls.up);
+        this.position = this.controls.eye;
+        this.up = this.controls.up;
+        __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["d" /* vec3 */].subtract(this.forward, this.target, this.position);
+        __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["d" /* vec3 */].normalize(this.forward, this.forward);
+        __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["d" /* vec3 */].cross(this.right, this.forward, this.up);
+        __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["d" /* vec3 */].normalize(this.right, this.right);
+    }
     setAspectRatio(aspectRatio) {
         this.aspectRatio = aspectRatio;
     }
@@ -16687,9 +16744,24 @@ class MapGenerator {
         };
     }
     /*
+     * Checks map difficulty
+     */
+    validDifficulty(difficulty, steps) {
+        if (difficulty == 'easy') {
+            return steps >= 3 && steps < 6;
+        }
+        if (difficulty == 'medium') {
+            return steps >= 6 && steps < 10;
+        }
+        if (difficulty == 'hard') {
+            return steps >= 10;
+        }
+        return true;
+    }
+    /*
      * Generates a map of size (x, y);
      */
-    generateMap(x, y) {
+    generateMap(x, y, difficulty) {
         let createdNewMap = false;
         // Tries to generate a solveable map
         while (!createdNewMap) {
@@ -16729,10 +16801,13 @@ class MapGenerator {
                 let currentPoint = queue.dequeue();
                 // If we reach the end, possible to solve the map
                 if (currentPoint.x == endingPoint.x && currentPoint.y == endingPoint.y) {
+                    if (!this.validDifficulty(difficulty, currentPoint['steps'])) {
+                        return this.generateMap(x, y, difficulty);
+                    }
                     this.currentMap = map;
                     console.log("THIS MAP IS POSSIBLE TO SOLVE WITH " + currentPoint['steps'] + " STEPS");
                     createdNewMap = true;
-                    return currentPoint['steps'];
+                    return this.currentMap;
                 }
                 // Find all neighbors and add it to our queue
                 let left = this.findLeft(map, currentPoint.x, currentPoint.y, x, y);
@@ -16796,12 +16871,6 @@ class MapGenerator {
             console.log("current map is null");
         }
     }
-    /*
-     * Returns the last map generated from generateMap()
-     */
-    getMap() {
-        return this.currentMap;
-    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = MapGenerator;
 
@@ -16855,7 +16924,7 @@ class Player {
         this.position = pos;
         this.map = map;
         this.state = null;
-        // Setup Event Listeners
+        this.completed = false;
         document.onkeydown = this.keypress.bind(this);
     }
     keypress(event) {
@@ -16921,6 +16990,9 @@ class Player {
     tick() {
         if (this.state) {
             this.state();
+            if (this.map[this.position[0]][this.position[1]] == 'E') {
+                this.completed = true;
+            }
         }
     }
 }

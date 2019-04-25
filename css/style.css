@@ -1,0 +1,160 @@
+body {
+     font-family : 'Roboto', sans-serif;
+     font-size : 17px;
+     line-height : 1.7em;
+     color : #353e55;
+     font-weight : 100;
+     background : #ffffff;
+}
+/* -------------------------------------- * Global Typography *------------------------------------------*/
+ h1, h2, h3, h4, h5, h6 {
+     margin : 0 0 15px;
+     color : #0e1555;
+}
+ h1 {
+     font-size : 36px;
+     line-height : 1.2em;
+     font-weight : 700;
+}
+ h2 {
+     font-size : 30px;
+     line-height : 1.5em;
+     font-weight : 400;
+}
+ h3 {
+     font-size : 24px;
+     line-height : 1.5em;
+     font-weight : 300;
+}
+ h4 {
+     font-size : 18px;
+     line-height : 1.5em;
+     font-weight : 300;
+}
+ h5 {
+     font-size : 16px;
+     line-height : 1.5em;
+     font-weight : 500;
+}
+ h6 {
+     font-size : 15px;
+     line-height : 24px;
+}
+/* -------------------------------------- * LINK STYLE *------------------------------------------*/
+ a {
+     color : #003366;
+     text-decoration : none;
+     -webkit-transition : all 0.3s ease 0s;
+     -moz-transition : all 0.3s ease 0s;
+     -o-transition : all 0.3s ease 0s;
+     transition : all 0.3s ease 0s;
+}
+ a, a:active, a:focus, a:active {
+     text-decoration : none;
+     outline : none 
+}
+ a:hover, a:focus {
+     text-decoration : none;
+     color : #999999;
+}
+/*Button Style*/
+ .btn {
+     padding : 10px 30px;
+     margin-bottom : 0;
+     font-size : 16px;
+     border-radius : 0;
+     font-weight : 500;
+     border-width : 2px;
+     text-transform : uppercase;
+}
+ .btn-lg {
+     font-size : 18px;
+     padding : 15px 30px 
+}
+/*btn-primary*/
+ .btn-primary {
+     background-color : #003366;
+     border-color : #003366;
+}
+ .btn-primary:hover, .btn-primary:focus, .btn-primary:active:focus {
+     background : transparent;
+     color : #003366;
+     border-color : #003366;
+}
+/*btn-default*/
+ .btn-default {
+     color : #ffffff;
+     background-color : transparent;
+     border-color : #ffffff;
+}
+ .btn-default:hover, .btn-default:focus, .btn-default:active:focus {
+     background-color : transparent;
+     color : #003366;
+     border-color : #003366;
+}
+ button:focus, .btn:focus, .btn:active:focus {
+     outline : none;
+}
+/* -------------------- * main Wrapper * -------------------*/
+ #main-wrapper {
+     background : #ffffff;
+     overflow : hidden;
+}
+/*------------------- * Jumbotron *-------------------*/
+ .jumbotron {
+     background : url("../img/img-jumbotron-bg.jpg");
+     background-size : cover;
+     padding : 0;
+     margin : 0;
+     height : 100vh;
+     min-height : 700px;
+     vertical-align : middle;
+     position : relative;
+     background-attachment : fixed;
+     background-repeat : no-repeat;
+     background-position : center center;
+     overflow : hidden;
+}
+ .jumbotron .content {
+     color : #ffffff;
+     position : absolute;
+     top : 50%;
+     left : 0;
+     right : 0;
+     height : 30%;
+     width : 100%;
+     margin : 0 auto;
+     padding : 0 10%;
+     transform : translateY(-50%);
+     -webkit-transform : translateY(-50%);
+     -moz-transform : translateY(-50%);
+}
+ .jumbotron .content h1 {
+     color : #ffffff;
+     font-weight : bold;
+}
+ .jumbotron .content p.lead {
+     font-size : 12px;
+     line-height : 1.5em;
+     color : rgba(255, 255, 255, .7);
+}
+ .jumbotron .content .map-counter {
+     font-size : 24px;
+     font-weight: bold;
+     margin-bottom : 40px;
+}
+ .jumbotron .btn {
+     margin-top : 40px;
+}
+ @media (max-width : 600px) {
+     .jumbotron .content {
+         min-height : auto;
+    }
+     .jumbotron .content h1 {
+         font-size : 26px;
+    }
+     .jumbotron .content p.lead {
+         font-size : 15px;
+    }
+}
+ 

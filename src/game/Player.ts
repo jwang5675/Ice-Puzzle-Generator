@@ -5,13 +5,13 @@ export default class Player {
 	position: vec2;
 	map: string[][];
 	state: any;
+	completed: boolean;
 
 	constructor(pos: vec2, map: string[][]) {
 		this.position = pos;
 		this.map = map;
 		this.state = null;
-
-		// Setup Event Listeners
+		this.completed = false;
 		document.onkeydown = this.keypress.bind(this);
 	}
 
@@ -84,6 +84,9 @@ export default class Player {
 	tick() {
 		if (this.state) {
 			this.state();
+			if (this.map[this.position[0]][this.position[1]] == 'E') {
+				this.completed = true;
+			}
 		}
 	}
 }

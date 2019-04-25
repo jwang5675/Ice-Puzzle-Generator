@@ -35,6 +35,25 @@ class Camera {
     vec3.normalize(this.right, this.right);
   }
 
+  set(position: vec3, target: vec3) {
+    const canvas = <HTMLCanvasElement> document.getElementById('canvas');
+
+    this.controls = CameraControls(canvas, {
+      eye: position,
+      center: target,
+    });
+
+    vec3.add(this.target, this.position, this.direction);
+    mat4.lookAt(this.viewMatrix, this.controls.eye, this.controls.center, this.controls.up);
+
+    this.position = this.controls.eye;
+    this.up = this.controls.up;
+    vec3.subtract(this.forward, this.target, this.position);
+    vec3.normalize(this.forward, this.forward);
+    vec3.cross(this.right, this.forward, this.up);
+    vec3.normalize(this.right, this.right);
+  }
+
   setAspectRatio(aspectRatio: number) {
     this.aspectRatio = aspectRatio;
   }
