@@ -199,6 +199,7 @@ function main() {
   window.setInterval(function() {
     if (player.completed) {
       numMapsCompleted = numMapsCompleted + 1;
+      quit();
       loadGame();
     } else {
       player.tick();
