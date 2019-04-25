@@ -1,5 +1,7 @@
 # Ice Puzzle Generator
 
+Demo Link: https://jwang5675.github.io/Ice-Puzzle-Generator/
+
 ## Background
 
 This repo contains the base code for a simple ice puzzle generator. The goal of the ice puzzle game is to reach the ending destination. The ice puzzle game works by allowing players to move in a single direction until they hit a boulder as if they were sliding on ice. After the player hits a boulder, they will be able to move in another direction. 
