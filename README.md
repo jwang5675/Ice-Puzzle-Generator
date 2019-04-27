@@ -2,8 +2,8 @@
 
 Demo Link: https://jwang5675.github.io/Ice-Puzzle-Generator/
 
-[![](img/title.png)]
-[![](img/gameplay.png)]
+![](img/title.png)
+![](img/gameplay.png)
 
 ## Background
 
