@@ -109,3 +109,9 @@ The game is rendered using textures and instanced rendering. Here are the source
 ## Gameplay
 
 The game works by having the user select a game difficulty on the main page. Once the difficulty is selected, the game generates a map based on that difficulty and the user must escape the map by moving the player sprite to the ladder.
+
+How difficulty is determined:
+ - Keep generating mazes and solving them with the above algorithm until we find a maze with a certain amount of minimum steps to complete the maze.
+ - If a maze requires 3-5 steps to complete, it is an easy maze.
+ - If a maze requires 6-9 steps to complete, it is a medium maze.
+ - If a maze requires 10+ steps to complete, it is a hard maze.`
