@@ -108,4 +108,4 @@ The game is rendered using textures and instanced rendering. Here are the source
 
 ## Gameplay
 
-TODO: Implement a simple game engine that works on short game ticks. Each tick will take in player input and try to move and render new instances of the player.
+The game works by having the user select a game difficulty on the main page. Once the difficulty is selected, the game generates a map based on that difficulty and the user must escape the map by moving the player sprite to the ladder.

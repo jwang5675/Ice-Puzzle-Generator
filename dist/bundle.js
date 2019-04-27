@@ -6101,13 +6101,22 @@ function loadScene() {
     playerSprite.create();
     screenQuad = new __WEBPACK_IMPORTED_MODULE_4__geometry_ScreenQuad__["a" /* default */]();
     screenQuad.create();
-    texUp = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../img/pikachu_up.png', 0);
-    texRight = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../img/pikachu_right.png', 0);
-    texDown = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../img/pikachu_down.png', 0);
-    texLeft = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../img/pikachu_left.png', 0);
-    texIce = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../img/ice.png', 0);
-    texRock = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../img/rock.png', 0);
-    texEnd = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../img/end.png', 0);
+    // Web Texture
+    texUp = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/pikachu_up.png', 0);
+    texRight = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/pikachu_right.png', 0);
+    texDown = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/pikachu_down.png', 0);
+    texLeft = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/pikachu_left.png', 0);
+    texIce = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/ice.png', 0);
+    texRock = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/rock.png', 0);
+    texEnd = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/end.png', 0);
+    // Uncomment to run locally
+    // texUp = new Texture('../img/pikachu_up.png', 0);
+    // texRight = new Texture('../img/pikachu_right.png', 0);
+    // texDown = new Texture('../img/pikachu_down.png', 0);
+    // texLeft = new Texture('../img/pikachu_left.png', 0);
+    // texIce = new Texture('../img/ice.png', 0);
+    // texRock = new Texture('../img/rock.png', 0);
+    // texEnd = new Texture('../img/end.png', 0);
     loadGame();
 }
 function updateScene(resizeFunc) {
@@ -16706,6 +16715,7 @@ class Texture {
             }.bind(this);
         }
         img.src = imgSource; // load the image
+        img.crossOrigin = '';
     }
 }
 /* unused harmony export Texture */
