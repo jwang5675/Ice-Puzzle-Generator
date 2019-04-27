@@ -12,11 +12,14 @@ in vec2 vs_UV; // Non-instanced, and presently unused in main(). Feel free to us
 out vec4 fs_Col;
 out vec4 fs_Nor;
 out vec4 fs_Pos;
+out vec3 fs_Translate;
 
 void main() {
     fs_Pos = vs_Pos;
+    fs_Pos.z = fs_Pos.z;
     fs_Nor = vs_Nor;
     fs_Col = vs_Col;
+    fs_Translate = vs_Translate;
 
     vec3 transformedPos = vs_Pos.xyz + vs_Translate;
 

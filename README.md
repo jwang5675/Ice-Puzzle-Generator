@@ -101,7 +101,10 @@ Some example inputs and outputs to the algorithm:
 
 ## Rendering 
 
-TODO: Implement instance rendering of ice blocks and boulders to generate world and render player spirits with textures
+The game is rendered using textures and instanced rendering. Here are the sources for the tilesets that are used within the game:
+ - Icy Tile: https://bulbapedia.bulbagarden.net/wiki/File:Ice_C.png
+ - Icy Rock: https://www.reddit.com/r/PixelArt/comments/a3849x/ice_cave_dungeon_tiles_knightsoftartarus/
+ - End Ladder: https://www.deviantart.com/piacarrot/art/Ice-Path-Tileset-392684771
 
 ## Gameplay
 

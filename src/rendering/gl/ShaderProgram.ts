@@ -1,6 +1,7 @@
-import {vec3, vec4, mat4, mat3} from 'gl-matrix';
+import {vec3, vec4, mat3, mat4} from 'gl-matrix';
 import Drawable from './Drawable';
 import {gl} from '../../globals';
+import Texture from './Texture';
 
 var activeProgram: WebGLProgram = null;
 
@@ -37,6 +38,15 @@ class ShaderProgram {
   unifUp: WebGLUniformLocation;
   unifDimensions: WebGLUniformLocation;
 
+  // Textures for player sprite
+  unifSampler1: WebGLUniformLocation;
+  unifSampler2: WebGLUniformLocation;
+  unifSampler3: WebGLUniformLocation;
+  unifSampler4: WebGLUniformLocation;
+  unifSampler5: WebGLUniformLocation;
+  unifSampler6: WebGLUniformLocation;
+  unifSampler7: WebGLUniformLocation;
+
   constructor(shaders: Array<Shader>) {
     this.prog = gl.createProgram();
 
@@ -60,6 +70,23 @@ class ShaderProgram {
     this.unifEye   = gl.getUniformLocation(this.prog, "u_Eye");
     this.unifRef   = gl.getUniformLocation(this.prog, "u_Ref");
     this.unifUp   = gl.getUniformLocation(this.prog, "u_Up");
+
+    // Uniforms for player sprite
+    this.unifSampler1   = gl.getUniformLocation(this.prog, "u_TexUp");
+    this.unifSampler2   = gl.getUniformLocation(this.prog, "u_TexRight");
+    this.unifSampler3   = gl.getUniformLocation(this.prog, "u_TexDown");
+    this.unifSampler4   = gl.getUniformLocation(this.prog, "u_TexLeft");
+    this.unifSampler5   = gl.getUniformLocation(this.prog, "u_TexIce");
+    this.unifSampler6   = gl.getUniformLocation(this.prog, "u_TexRock");
+    this.unifSampler7   = gl.getUniformLocation(this.prog, "u_TexEnd");
+  }
+
+  // Bind the given Texture to the given texture unit
+  bindTexToUnit(handleName: WebGLUniformLocation, tex: Texture, unit: number) {
+    this.use();
+    gl.activeTexture(gl.TEXTURE0 + unit);
+    tex.bindTex();
+    gl.uniform1i(handleName, unit);
   }
 
   use() {

@@ -7,6 +7,7 @@ import OpenGLRenderer from './rendering/gl/OpenGLRenderer';
 import Camera from './Camera';
 import {setGL} from './globals';
 import ShaderProgram, {Shader} from './rendering/gl/ShaderProgram';
+import Texture from './rendering/gl/Texture';
 import MapGenerator from './game/MapGenerator';
 import Player from './game/Player'
 
@@ -21,6 +22,14 @@ let playerSprite: Square;
 let screenQuad: ScreenQuad;
 let time: number = 0.0;
 let camera: Camera;
+
+let texUp: Texture;
+let texRight: Texture;
+let texDown: Texture;
+let texLeft: Texture;
+let texIce: Texture;
+let texRock: Texture;
+let texEnd: Texture;
 
 let mapGenerator: MapGenerator;
 let player: Player;
@@ -54,20 +63,23 @@ function loadGame() {
         colorsArray.push(0.3);
         colorsArray.push(0.25);
         colorsArray.push(0.3);
+        colorsArray.push(0.1);
       } else if (map[x][y] == 'S') {
         colorsArray.push(1);
         colorsArray.push(0);
         colorsArray.push(0);
+        colorsArray.push(1.0);
       } else if (map[x][y] == 'E') {
         colorsArray.push(0);
         colorsArray.push(1);
         colorsArray.push(0);
+        colorsArray.push(0.2);
       } else {
         colorsArray.push(0.5);
         colorsArray.push(0.8);
         colorsArray.push(1.0);
+        colorsArray.push(1.0);
       }
-      colorsArray.push(1.0);
     }
   }
   let offsets: Float32Array = new Float32Array(offsetsArray);
@@ -80,19 +92,29 @@ function loadGame() {
 }
 
 function loadScene() {
-  console.log('Number of map completed: ' + numMapsCompleted);
   square = new Square();
   square.create();
+
   playerSprite = new Square;
   playerSprite.create();
+
   screenQuad = new ScreenQuad();
   screenQuad.create();
+
+  texUp = new Texture('../img/pikachu_up.png', 0);
+  texRight = new Texture('../img/pikachu_right.png', 0);
+  texDown = new Texture('../img/pikachu_down.png', 0);
+  texLeft = new Texture('../img/pikachu_left.png', 0);
+  texIce = new Texture('../img/ice.png', 0);
+  texRock = new Texture('../img/rock.png', 0);
+  texEnd = new Texture('../img/end.png', 0);
+
   loadGame();
 }
 
 function updateScene(resizeFunc: any) {
   // Render Player and Update Camera
-  let offsets: Float32Array = new Float32Array([player.position[0], player.position[1], 0.1]);
+  let offsets: Float32Array = player.getPlayerVBO();
   let colors: Float32Array = new Float32Array([1, 1, 1, 1]);
   playerSprite.setInstanceVBOs(offsets, colors);
   playerSprite.setNumInstances(1);
@@ -131,6 +153,8 @@ function main() {
   renderer.setClearColor(0.2, 0.2, 0.2, 1);
   gl.enable(gl.DEPTH_TEST);
   gl.blendFunc(gl.ONE, gl.ONE);
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
   const instancedShader = new ShaderProgram([
     new Shader(gl.VERTEX_SHADER, require('./shaders/instanced-vert.glsl')),
@@ -141,6 +165,16 @@ function main() {
     new Shader(gl.VERTEX_SHADER, require('./shaders/flat-vert.glsl')),
     new Shader(gl.FRAGMENT_SHADER, require('./shaders/flat-frag.glsl')),
   ]);
+
+  // TESTING TEXTURES START HERE
+  instancedShader.bindTexToUnit(instancedShader.unifSampler1, texUp, 0);
+  instancedShader.bindTexToUnit(instancedShader.unifSampler2, texRight, 1);
+  instancedShader.bindTexToUnit(instancedShader.unifSampler3, texDown, 2);
+  instancedShader.bindTexToUnit(instancedShader.unifSampler4, texLeft, 3);
+  instancedShader.bindTexToUnit(instancedShader.unifSampler5, texIce, 4);
+  instancedShader.bindTexToUnit(instancedShader.unifSampler6, texRock, 5);
+  instancedShader.bindTexToUnit(instancedShader.unifSampler7, texEnd, 6);
+
 
   // Setup Event Listeners
   let resize = function() {
@@ -185,17 +219,14 @@ function main() {
     ]);
     renderer.render(camera, instancedShader, [
       square,
-      playerSprite
+      playerSprite,
     ]);
     stats.end();
 
     requestAnimationFrame(tick);
   }
 
-  // Start Render Loop
-  tick();
-
-  // Start Game Engine 
+  // Start Game Engine and Render Loop
   window.setInterval(function() {
     if (player.completed) {
       numMapsCompleted = numMapsCompleted + 1;
@@ -205,6 +236,8 @@ function main() {
       player.tick();
     }
   }, 20);
+  tick();
+
 }
 
 main();

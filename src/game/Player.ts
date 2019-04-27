@@ -4,12 +4,14 @@ import {vec2} from 'gl-matrix';
 export default class Player {
 	position: vec2;
 	map: string[][];
+	lastKey: string;
 	state: any;
 	completed: boolean;
 
 	constructor(pos: vec2, map: string[][]) {
 		this.position = pos;
 		this.map = map;
+		this.lastKey = 'down';
 		this.state = null;
 		this.completed = false;
 		document.onkeydown = this.keypress.bind(this);
@@ -18,21 +20,25 @@ export default class Player {
 	keypress(event: any) {
 		if (event.keyCode == '38') {
 			if (this.state == null) {
+				this.lastKey = 'up';
 	        	this.state = this.up;
 	    	}
 	    }
 	    else if (event.keyCode == '40') {
 	    	if (this.state == null) {
+	    		this.lastKey = 'down';
 	        	this.state = this.down;
 	    	}
 	    }
 	    else if (event.keyCode == '37') {
 	    	if (this.state == null) {
+	    		this.lastKey = 'left';
 	    		this.state = this.left;
 	    	}
 	    }
 	    else if (event.keyCode == '39') {
 	    	if (this.state == null) {
+	    		this.lastKey = 'right';
 	    		this.state = this.right;
 	    	}
 	    }
@@ -88,5 +94,26 @@ export default class Player {
 				this.completed = true;
 			}
 		}
+	}
+
+	getPlayerVBO() {
+		let vbo: number[] = [];
+		vbo.push(this.position[0]);
+		vbo.push(this.position[1]);
+
+		if (this.lastKey == 'up') {
+			vbo.push(0.01);
+		} 
+		if (this.lastKey == 'down') {
+			vbo.push(0.02);
+		}
+		if (this.lastKey == 'left') {
+			vbo.push(0.03);
+		}
+		if (this.lastKey == 'right') {
+			vbo.push(0.04);
+		}
+
+		return new Float32Array(vbo);
 	}
 }

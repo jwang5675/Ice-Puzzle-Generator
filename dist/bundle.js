@@ -6007,8 +6007,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Camera__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__globals__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__rendering_gl_ShaderProgram__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__game_MapGenerator__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__game_Player__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__game_MapGenerator__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__game_Player__ = __webpack_require__(72);
+
 
 
 
@@ -6029,6 +6031,13 @@ let playerSprite;
 let screenQuad;
 let time = 0.0;
 let camera;
+let texUp;
+let texRight;
+let texDown;
+let texLeft;
+let texIce;
+let texRock;
+let texEnd;
 let mapGenerator;
 let player;
 let difficulty;
@@ -6043,7 +6052,7 @@ function quit() {
 }
 function loadGame() {
     // Set up Map Generator
-    mapGenerator = new __WEBPACK_IMPORTED_MODULE_9__game_MapGenerator__["a" /* default */];
+    mapGenerator = new __WEBPACK_IMPORTED_MODULE_10__game_MapGenerator__["a" /* default */];
     let map = mapGenerator.generateMap(20, 25, difficulty);
     let offsetsArray = [];
     let colorsArray = [];
@@ -6056,23 +6065,26 @@ function loadGame() {
                 colorsArray.push(0.3);
                 colorsArray.push(0.25);
                 colorsArray.push(0.3);
+                colorsArray.push(0.1);
             }
             else if (map[x][y] == 'S') {
                 colorsArray.push(1);
                 colorsArray.push(0);
                 colorsArray.push(0);
+                colorsArray.push(1.0);
             }
             else if (map[x][y] == 'E') {
                 colorsArray.push(0);
                 colorsArray.push(1);
                 colorsArray.push(0);
+                colorsArray.push(0.2);
             }
             else {
                 colorsArray.push(0.5);
                 colorsArray.push(0.8);
                 colorsArray.push(1.0);
+                colorsArray.push(1.0);
             }
-            colorsArray.push(1.0);
         }
     }
     let offsets = new Float32Array(offsetsArray);
@@ -6080,21 +6092,27 @@ function loadGame() {
     square.setInstanceVBOs(offsets, colors);
     square.setNumInstances(map.length * map[0].length);
     // Setup Player Class
-    player = new __WEBPACK_IMPORTED_MODULE_10__game_Player__["a" /* default */](__WEBPACK_IMPORTED_MODULE_0_gl_matrix__["c" /* vec2 */].fromValues(mapGenerator.start.x, mapGenerator.start.y), map);
+    player = new __WEBPACK_IMPORTED_MODULE_11__game_Player__["a" /* default */](__WEBPACK_IMPORTED_MODULE_0_gl_matrix__["c" /* vec2 */].fromValues(mapGenerator.start.x, mapGenerator.start.y), map);
 }
 function loadScene() {
-    console.log('Number of map completed: ' + numMapsCompleted);
     square = new __WEBPACK_IMPORTED_MODULE_3__geometry_Square__["a" /* default */]();
     square.create();
     playerSprite = new __WEBPACK_IMPORTED_MODULE_3__geometry_Square__["a" /* default */];
     playerSprite.create();
     screenQuad = new __WEBPACK_IMPORTED_MODULE_4__geometry_ScreenQuad__["a" /* default */]();
     screenQuad.create();
+    texUp = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../img/pikachu_up.png', 0);
+    texRight = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../img/pikachu_right.png', 0);
+    texDown = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../img/pikachu_down.png', 0);
+    texLeft = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../img/pikachu_left.png', 0);
+    texIce = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../img/ice.png', 0);
+    texRock = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../img/rock.png', 0);
+    texEnd = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../img/end.png', 0);
     loadGame();
 }
 function updateScene(resizeFunc) {
     // Render Player and Update Camera
-    let offsets = new Float32Array([player.position[0], player.position[1], 0.1]);
+    let offsets = player.getPlayerVBO();
     let colors = new Float32Array([1, 1, 1, 1]);
     playerSprite.setInstanceVBOs(offsets, colors);
     playerSprite.setNumInstances(1);
@@ -6127,14 +6145,24 @@ function main() {
     renderer.setClearColor(0.2, 0.2, 0.2, 1);
     gl.enable(gl.DEPTH_TEST);
     gl.blendFunc(gl.ONE, gl.ONE);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     const instancedShader = new __WEBPACK_IMPORTED_MODULE_8__rendering_gl_ShaderProgram__["b" /* default */]([
-        new __WEBPACK_IMPORTED_MODULE_8__rendering_gl_ShaderProgram__["a" /* Shader */](gl.VERTEX_SHADER, __webpack_require__(72)),
-        new __WEBPACK_IMPORTED_MODULE_8__rendering_gl_ShaderProgram__["a" /* Shader */](gl.FRAGMENT_SHADER, __webpack_require__(73)),
+        new __WEBPACK_IMPORTED_MODULE_8__rendering_gl_ShaderProgram__["a" /* Shader */](gl.VERTEX_SHADER, __webpack_require__(73)),
+        new __WEBPACK_IMPORTED_MODULE_8__rendering_gl_ShaderProgram__["a" /* Shader */](gl.FRAGMENT_SHADER, __webpack_require__(74)),
     ]);
     const flat = new __WEBPACK_IMPORTED_MODULE_8__rendering_gl_ShaderProgram__["b" /* default */]([
-        new __WEBPACK_IMPORTED_MODULE_8__rendering_gl_ShaderProgram__["a" /* Shader */](gl.VERTEX_SHADER, __webpack_require__(74)),
-        new __WEBPACK_IMPORTED_MODULE_8__rendering_gl_ShaderProgram__["a" /* Shader */](gl.FRAGMENT_SHADER, __webpack_require__(75)),
+        new __WEBPACK_IMPORTED_MODULE_8__rendering_gl_ShaderProgram__["a" /* Shader */](gl.VERTEX_SHADER, __webpack_require__(75)),
+        new __WEBPACK_IMPORTED_MODULE_8__rendering_gl_ShaderProgram__["a" /* Shader */](gl.FRAGMENT_SHADER, __webpack_require__(76)),
     ]);
+    // TESTING TEXTURES START HERE
+    instancedShader.bindTexToUnit(instancedShader.unifSampler1, texUp, 0);
+    instancedShader.bindTexToUnit(instancedShader.unifSampler2, texRight, 1);
+    instancedShader.bindTexToUnit(instancedShader.unifSampler3, texDown, 2);
+    instancedShader.bindTexToUnit(instancedShader.unifSampler4, texLeft, 3);
+    instancedShader.bindTexToUnit(instancedShader.unifSampler5, texIce, 4);
+    instancedShader.bindTexToUnit(instancedShader.unifSampler6, texRock, 5);
+    instancedShader.bindTexToUnit(instancedShader.unifSampler7, texEnd, 6);
     // Setup Event Listeners
     let resize = function () {
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -6176,14 +6204,12 @@ function main() {
         ]);
         renderer.render(camera, instancedShader, [
             square,
-            playerSprite
+            playerSprite,
         ]);
         stats.end();
         requestAnimationFrame(tick);
     }
-    // Start Render Loop
-    tick();
-    // Start Game Engine 
+    // Start Game Engine and Render Loop
     window.setInterval(function () {
         if (player.completed) {
             numMapsCompleted = numMapsCompleted + 1;
@@ -6194,6 +6220,7 @@ function main() {
             player.tick();
         }
     }, 20);
+    tick();
 }
 main();
 
@@ -16500,6 +16527,21 @@ class ShaderProgram {
         this.unifEye = __WEBPACK_IMPORTED_MODULE_1__globals__["a" /* gl */].getUniformLocation(this.prog, "u_Eye");
         this.unifRef = __WEBPACK_IMPORTED_MODULE_1__globals__["a" /* gl */].getUniformLocation(this.prog, "u_Ref");
         this.unifUp = __WEBPACK_IMPORTED_MODULE_1__globals__["a" /* gl */].getUniformLocation(this.prog, "u_Up");
+        // Uniforms for player sprite
+        this.unifSampler1 = __WEBPACK_IMPORTED_MODULE_1__globals__["a" /* gl */].getUniformLocation(this.prog, "u_TexUp");
+        this.unifSampler2 = __WEBPACK_IMPORTED_MODULE_1__globals__["a" /* gl */].getUniformLocation(this.prog, "u_TexRight");
+        this.unifSampler3 = __WEBPACK_IMPORTED_MODULE_1__globals__["a" /* gl */].getUniformLocation(this.prog, "u_TexDown");
+        this.unifSampler4 = __WEBPACK_IMPORTED_MODULE_1__globals__["a" /* gl */].getUniformLocation(this.prog, "u_TexLeft");
+        this.unifSampler5 = __WEBPACK_IMPORTED_MODULE_1__globals__["a" /* gl */].getUniformLocation(this.prog, "u_TexIce");
+        this.unifSampler6 = __WEBPACK_IMPORTED_MODULE_1__globals__["a" /* gl */].getUniformLocation(this.prog, "u_TexRock");
+        this.unifSampler7 = __WEBPACK_IMPORTED_MODULE_1__globals__["a" /* gl */].getUniformLocation(this.prog, "u_TexEnd");
+    }
+    // Bind the given Texture to the given texture unit
+    bindTexToUnit(handleName, tex, unit) {
+        this.use();
+        __WEBPACK_IMPORTED_MODULE_1__globals__["a" /* gl */].activeTexture(__WEBPACK_IMPORTED_MODULE_1__globals__["a" /* gl */].TEXTURE0 + unit);
+        tex.bindTex();
+        __WEBPACK_IMPORTED_MODULE_1__globals__["a" /* gl */].uniform1i(handleName, unit);
     }
     use() {
         if (activeProgram !== this.prog) {
@@ -16617,7 +16659,67 @@ class ShaderProgram {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game_Queue__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globals__ = __webpack_require__(1);
+
+class Texture {
+    bindTex() {
+        __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].bindTexture(__WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_2D, this.texture);
+    }
+    handle() {
+        return this.texture;
+    }
+    isPowerOf2(value) {
+        return (value & (value - 1)) == 0;
+    }
+    constructor(imgSource, clampVert) {
+        this.texture = __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].createTexture();
+        this.bindTex();
+        // create a white pixel to serve as placeholder
+        const formatSrc = __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].RGBA;
+        const formatDst = __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].RGBA;
+        const lvl = 0;
+        const phWidth = 1; // placeholder
+        const phHeight = 1;
+        const phImg = new Uint8Array([255, 255, 255, 255]);
+        const formatBit = __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].UNSIGNED_BYTE; // TODO: HDR
+        __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].texImage2D(__WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_2D, lvl, formatDst, phWidth, phHeight, 0, formatSrc, formatBit, phImg);
+        // get a javascript image locally and load it. not instant but will auto-replace white pixel
+        const img = new Image();
+        if (clampVert == 0) {
+            img.onload = function () {
+                this.bindTex();
+                __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].texImage2D(__WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_2D, lvl, formatDst, img.width, img.height, 0, formatSrc, formatBit, img);
+                __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].texParameteri(__WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_2D, __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_WRAP_S, __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].REPEAT);
+                __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].texParameteri(__WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_2D, __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_WRAP_T, __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].REPEAT);
+                __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].texParameteri(__WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_2D, __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_MIN_FILTER, __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].LINEAR);
+                __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].texParameteri(__WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_2D, __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_MAG_FILTER, __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].LINEAR);
+            }.bind(this);
+        }
+        else {
+            img.onload = function () {
+                this.bindTex();
+                __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].texImage2D(__WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_2D, lvl, formatDst, img.width, img.height, 0, formatSrc, formatBit, img);
+                __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].texParameteri(__WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_2D, __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_WRAP_S, __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].CLAMP_TO_EDGE);
+                __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].texParameteri(__WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_2D, __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_WRAP_T, __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].CLAMP_TO_EDGE);
+                __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].texParameteri(__WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_2D, __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_MIN_FILTER, __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].LINEAR);
+                __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].texParameteri(__WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_2D, __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].TEXTURE_MAG_FILTER, __WEBPACK_IMPORTED_MODULE_0__globals__["a" /* gl */].LINEAR);
+            }.bind(this);
+        }
+        img.src = imgSource; // load the image
+    }
+}
+/* unused harmony export Texture */
+
+;
+/* harmony default export */ __webpack_exports__["a"] = (Texture);
+
+
+/***/ }),
+/* 70 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game_Queue__ = __webpack_require__(71);
 
 class MapGenerator {
     constructor() {
@@ -16878,7 +16980,7 @@ class MapGenerator {
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16916,7 +17018,7 @@ class Queue {
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16924,6 +17026,7 @@ class Player {
     constructor(pos, map) {
         this.position = pos;
         this.map = map;
+        this.lastKey = 'down';
         this.state = null;
         this.completed = false;
         document.onkeydown = this.keypress.bind(this);
@@ -16931,21 +17034,25 @@ class Player {
     keypress(event) {
         if (event.keyCode == '38') {
             if (this.state == null) {
+                this.lastKey = 'up';
                 this.state = this.up;
             }
         }
         else if (event.keyCode == '40') {
             if (this.state == null) {
+                this.lastKey = 'down';
                 this.state = this.down;
             }
         }
         else if (event.keyCode == '37') {
             if (this.state == null) {
+                this.lastKey = 'left';
                 this.state = this.left;
             }
         }
         else if (event.keyCode == '39') {
             if (this.state == null) {
+                this.lastKey = 'right';
                 this.state = this.right;
             }
         }
@@ -16996,31 +17103,49 @@ class Player {
             }
         }
     }
+    getPlayerVBO() {
+        let vbo = [];
+        vbo.push(this.position[0]);
+        vbo.push(this.position[1]);
+        if (this.lastKey == 'up') {
+            vbo.push(0.01);
+        }
+        if (this.lastKey == 'down') {
+            vbo.push(0.02);
+        }
+        if (this.lastKey == 'left') {
+            vbo.push(0.03);
+        }
+        if (this.lastKey == 'right') {
+            vbo.push(0.04);
+        }
+        return new Float32Array(vbo);
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Player;
 
 
 
 /***/ }),
-/* 72 */
-/***/ (function(module, exports) {
-
-module.exports = "#version 300 es\n\nuniform mat4 u_ViewProj;\nuniform float u_Time;\n\nin vec4 vs_Pos; // Non-instanced; each particle is the same quad drawn in a different place\nin vec4 vs_Nor; // Non-instanced, and presently unused\nin vec4 vs_Col; // An instanced rendering attribute; each particle instance has a different color\nin vec3 vs_Translate; // Another instance rendering attribute used to position each quad instance in the scene\nin vec2 vs_UV; // Non-instanced, and presently unused in main(). Feel free to use it for your meshes.\n\nout vec4 fs_Col;\nout vec4 fs_Nor;\nout vec4 fs_Pos;\n\nvoid main() {\n    fs_Pos = vs_Pos;\n    fs_Nor = vs_Nor;\n    fs_Col = vs_Col;\n\n    vec3 transformedPos = vs_Pos.xyz + vs_Translate;\n\n    gl_Position = u_ViewProj * vec4(transformedPos, 1.0);\n}\n"
-
-/***/ }),
 /* 73 */
 /***/ (function(module, exports) {
 
-module.exports = "#version 300 es\nprecision highp float;\n\nin vec4 fs_Col;\nin vec4 fs_Pos;\n\nout vec4 out_Col;\n\nvoid main() {\n    out_Col = fs_Col;\n}\n"
+module.exports = "#version 300 es\n\nuniform mat4 u_ViewProj;\nuniform float u_Time;\n\nin vec4 vs_Pos; // Non-instanced; each particle is the same quad drawn in a different place\nin vec4 vs_Nor; // Non-instanced, and presently unused\nin vec4 vs_Col; // An instanced rendering attribute; each particle instance has a different color\nin vec3 vs_Translate; // Another instance rendering attribute used to position each quad instance in the scene\nin vec2 vs_UV; // Non-instanced, and presently unused in main(). Feel free to use it for your meshes.\n\nout vec4 fs_Col;\nout vec4 fs_Nor;\nout vec4 fs_Pos;\nout vec3 fs_Translate;\n\nvoid main() {\n    fs_Pos = vs_Pos;\n    fs_Pos.z = fs_Pos.z;\n    fs_Nor = vs_Nor;\n    fs_Col = vs_Col;\n    fs_Translate = vs_Translate;\n\n    vec3 transformedPos = vs_Pos.xyz + vs_Translate;\n\n    gl_Position = u_ViewProj * vec4(transformedPos, 1.0);\n}\n"
 
 /***/ }),
 /* 74 */
 /***/ (function(module, exports) {
 
-module.exports = "#version 300 es\nprecision highp float;\n\n// The vertex shader used to render the background of the scene\n\nin vec4 vs_Pos;\nout vec2 fs_Pos;\n\nvoid main() {\n  fs_Pos = vs_Pos.xy;\n  gl_Position = vs_Pos;\n}\n"
+module.exports = "#version 300 es\nprecision highp float;\n\nuniform sampler2D u_TexUp;\nuniform sampler2D u_TexRight;\nuniform sampler2D u_TexDown;\nuniform sampler2D u_TexLeft;\nuniform sampler2D u_TexIce;\nuniform sampler2D u_TexRock;\nuniform sampler2D u_TexEnd;\n\nin vec4 fs_Col;\nin vec4 fs_Pos;\nin vec3 fs_Translate;\n\nout vec4 out_Col;\n\nvec4 getTextureColor() {\n\tvec2 uv = fs_Pos.xy + vec2(0.5);\n  \tuv.y = 1.0 - uv.y;\n\n  \tif (fs_Translate.z == 0.01) {\n  \t\treturn texture(u_TexUp, uv);\n  \t} else if (fs_Translate.z == 0.02) {\n  \t\treturn texture(u_TexDown, uv);\n  \t} else if (fs_Translate.z == 0.03) {\n  \t\treturn texture(u_TexLeft, uv);\n  \t} else if (fs_Translate.z == 0.04) {\n  \t\treturn texture(u_TexRight, uv);\n  \t} else if (fs_Col[3] == 0.1) {\n  \t\treturn texture(u_TexRock, uv);\n  \t} else if (fs_Col[3] == 0.2) {\n  \t\treturn texture(u_TexEnd, uv);\n  \t} else {\n  \t\treturn texture(u_TexIce, uv);\n  \t}\n}\n\nvoid main() {\n    out_Col = getTextureColor();\n}"
 
 /***/ }),
 /* 75 */
+/***/ (function(module, exports) {
+
+module.exports = "#version 300 es\nprecision highp float;\n\n// The vertex shader used to render the background of the scene\n\nin vec4 vs_Pos;\nout vec2 fs_Pos;\n\nvoid main() {\n  fs_Pos = vs_Pos.xy;\n  gl_Position = vs_Pos;\n}\n"
+
+/***/ }),
+/* 76 */
 /***/ (function(module, exports) {
 
 module.exports = "#version 300 es\nprecision highp float;\n\nuniform vec3 u_Eye, u_Ref, u_Up;\nuniform vec2 u_Dimensions;\nuniform float u_Time;\n\nin vec2 fs_Pos;\nout vec4 out_Col;\n\nvoid main() {\n  out_Col = vec4(0, 0, 0, 1);\n}\n"
