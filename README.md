@@ -117,4 +117,16 @@ How difficulty is determined:
  - Keep generating mazes and solving them with the above algorithm until we find a maze with a certain amount of minimum steps to complete the maze.
  - If a maze requires 3-5 steps to complete, it is an easy maze.
  - If a maze requires 6-9 steps to complete, it is a medium maze.
- - If a maze requires 10+ steps to complete, it is a hard maze.`
+ - If a maze requires 10+ steps to complete, it is a hard maze.
+
+## Performance Testing
+I ran a couple of performance tests on generating different map difficulties. Here are the results of generating (20 x 25) maps:
+ - Created 10,000 (20 x 25) easy maps, took 5.74 seconds. On average, it takes 0.574 milliseconds to create 1 easy map.
+ - Created 10,000 (20 x 25) medium maps, took 2.63 seconds. On average, it takes 0.263 milliseconds to create 1 medium map.
+ - Created 10,000 (20 x 25) hard maps, took 3.36 seconds. On average, it takes 0.336 milliseconds to create 1 hard map.
+However, creating large maps increase runtime significantly for easy maps. Here are the results of generating (30 x 35) maps:
+ - Created 10,000 (30 x 35) easy maps, took 31.42 seconds. On average, it takes 3.142 milliseconds to create 1 easy map.
+ - Created 10,000 (30 x 35) medium maps, took 6.50 seconds. On average, it takes 0.650 milliseconds to create 1 medium map.
+ - Created 10,000 (30 x 35) hard maps, took 3.51 seconds. On average, it takes 0.351 milliseconds to create 1 hard map.
+
+ However, even creating large maps of size 30 x 35, it still takes < 5 milliseconds to create a single map on average.

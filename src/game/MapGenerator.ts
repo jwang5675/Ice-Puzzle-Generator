@@ -227,7 +227,6 @@ export default class MapGenerator {
 						return this.generateMap(x, y, difficulty);
 					} 
 					this.currentMap = map;
-					console.log("THIS MAP IS POSSIBLE TO SOLVE WITH " + currentPoint['steps'] + " STEPS");
 					createdNewMap = true;
 					return this.currentMap;
 				}

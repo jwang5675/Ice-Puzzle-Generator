@@ -9,7 +9,8 @@ import {setGL} from './globals';
 import ShaderProgram, {Shader} from './rendering/gl/ShaderProgram';
 import Texture from './rendering/gl/Texture';
 import MapGenerator from './game/MapGenerator';
-import Player from './game/Player'
+import Player from './game/Player';
+import PerformanceTest from './game/PerformanceTest';
 
 
 const controls = {
@@ -248,6 +249,9 @@ function main() {
   }, 20);
   tick();
 
+  // Uncomment to run performance test
+  // let test: PerformanceTest = new PerformanceTest();
+  // test.runPerformanceTest();
 }
 
 main();
