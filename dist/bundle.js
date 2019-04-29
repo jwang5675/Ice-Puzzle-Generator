@@ -6102,21 +6102,21 @@ function loadScene() {
     screenQuad = new __WEBPACK_IMPORTED_MODULE_4__geometry_ScreenQuad__["a" /* default */]();
     screenQuad.create();
     // Web Texture
-    texUp = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/pikachu_up.png', 0);
-    texRight = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/pikachu_right.png', 0);
-    texDown = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/pikachu_down.png', 0);
-    texLeft = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/pikachu_left.png', 0);
-    texIce = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/ice.png', 0);
-    texRock = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/rock.png', 0);
-    texEnd = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/end.png', 0);
+    // texUp = new Texture('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/pikachu_up.png', 0);
+    // texRight = new Texture('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/pikachu_right.png', 0);
+    // texDown = new Texture('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/pikachu_down.png', 0);
+    // texLeft = new Texture('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/pikachu_left.png', 0);
+    // texIce = new Texture('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/ice.png', 0);
+    // texRock = new Texture('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/rock.png', 0);
+    // texEnd = new Texture('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/end.png', 0);
     // Uncomment to run locally
-    // texUp = new Texture('../img/pikachu_up.png', 0);
-    // texRight = new Texture('../img/pikachu_right.png', 0);
-    // texDown = new Texture('../img/pikachu_down.png', 0);
-    // texLeft = new Texture('../img/pikachu_left.png', 0);
-    // texIce = new Texture('../img/ice.png', 0);
-    // texRock = new Texture('../img/rock.png', 0);
-    // texEnd = new Texture('../img/end.png', 0);
+    texUp = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../src/img/pikachu_up.png', 0);
+    texRight = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../src/img/pikachu_right.png', 0);
+    texDown = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../src/img/pikachu_down.png', 0);
+    texLeft = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../src/img/pikachu_left.png', 0);
+    texIce = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../src/img/ice.png', 0);
+    texRock = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../src/img/rock.png', 0);
+    texEnd = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../src/img/end.png', 0);
     loadGame();
 }
 function updateScene(resizeFunc) {
@@ -6230,6 +6230,9 @@ function main() {
         }
     }, 20);
     tick();
+    // Uncomment to run performance test
+    // let test: PerformanceTest = new PerformanceTest();
+    // test.runPerformanceTest();
 }
 main();
 
@@ -16918,7 +16921,6 @@ class MapGenerator {
                         return this.generateMap(x, y, difficulty);
                     }
                     this.currentMap = map;
-                    console.log("THIS MAP IS POSSIBLE TO SOLVE WITH " + currentPoint['steps'] + " STEPS");
                     createdNewMap = true;
                     return this.currentMap;
                 }
