@@ -6101,15 +6101,6 @@ function loadScene() {
     playerSprite.create();
     screenQuad = new __WEBPACK_IMPORTED_MODULE_4__geometry_ScreenQuad__["a" /* default */]();
     screenQuad.create();
-    // Web Texture
-    // texUp = new Texture('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/pikachu_up.png', 0);
-    // texRight = new Texture('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/pikachu_right.png', 0);
-    // texDown = new Texture('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/pikachu_down.png', 0);
-    // texLeft = new Texture('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/pikachu_left.png', 0);
-    // texIce = new Texture('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/ice.png', 0);
-    // texRock = new Texture('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/rock.png', 0);
-    // texEnd = new Texture('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/end.png', 0);
-    // Uncomment to run locally
     texUp = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('./img/pikachu_up.png', 0);
     texRight = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('./img/pikachu_right.png', 0);
     texDown = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('./img/pikachu_down.png', 0);
@@ -6122,7 +6113,7 @@ function loadScene() {
 function updateScene(resizeFunc) {
     // Render Player and Update Camera
     let offsets = player.getPlayerVBO();
-    let colors = new Float32Array([1, 1, 1, 1]);
+    let colors = player.getPlayerColor();
     playerSprite.setInstanceVBOs(offsets, colors);
     playerSprite.setNumInstances(1);
     camera.set(__WEBPACK_IMPORTED_MODULE_0_gl_matrix__["d" /* vec3 */].fromValues(player.position[0], player.position[1], 20), __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["d" /* vec3 */].fromValues(player.position[0], player.position[1], 0));
@@ -6152,6 +6143,7 @@ function main() {
     camera = new __WEBPACK_IMPORTED_MODULE_6__Camera__["a" /* default */](__WEBPACK_IMPORTED_MODULE_0_gl_matrix__["d" /* vec3 */].fromValues(0, 0, 20), __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["d" /* vec3 */].fromValues(0, 0, 0));
     const renderer = new __WEBPACK_IMPORTED_MODULE_5__rendering_gl_OpenGLRenderer__["a" /* default */](canvas);
     renderer.setClearColor(0.2, 0.2, 0.2, 1);
+    gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     const instancedShader = new __WEBPACK_IMPORTED_MODULE_8__rendering_gl_ShaderProgram__["b" /* default */]([
@@ -17117,19 +17109,24 @@ class Player {
         let vbo = [];
         vbo.push(this.position[0]);
         vbo.push(this.position[1]);
+        vbo.push(0.2);
+        return new Float32Array(vbo);
+    }
+    getPlayerColor() {
+        let offset = 0;
         if (this.lastKey == 'up') {
-            vbo.push(0.01);
+            offset = 0.01;
         }
         if (this.lastKey == 'down') {
-            vbo.push(0.02);
+            offset = 0.02;
         }
         if (this.lastKey == 'left') {
-            vbo.push(0.03);
+            offset = 0.03;
         }
         if (this.lastKey == 'right') {
-            vbo.push(0.04);
+            offset = 0.04;
         }
-        return new Float32Array(vbo);
+        return new Float32Array([1, 1, 1, offset]);
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Player;
@@ -17146,7 +17143,7 @@ module.exports = "#version 300 es\n\nuniform mat4 u_ViewProj;\nuniform float u_T
 /* 74 */
 /***/ (function(module, exports) {
 
-module.exports = "#version 300 es\nprecision highp float;\n\nuniform sampler2D u_TexUp;\nuniform sampler2D u_TexRight;\nuniform sampler2D u_TexDown;\nuniform sampler2D u_TexLeft;\nuniform sampler2D u_TexIce;\nuniform sampler2D u_TexRock;\nuniform sampler2D u_TexEnd;\n\nin vec4 fs_Col;\nin vec4 fs_Pos;\nin vec3 fs_Translate;\n\nout vec4 out_Col;\n\nvec4 getTextureColor() {\n\tvec2 uv = fs_Pos.xy + vec2(0.5);\n  \tuv.y = 1.0 - uv.y;\n\n  \tif (fs_Translate.z == 0.01) {\n  \t\treturn texture(u_TexUp, uv);\n  \t} else if (fs_Translate.z == 0.02) {\n  \t\treturn texture(u_TexDown, uv);\n  \t} else if (fs_Translate.z == 0.03) {\n  \t\treturn texture(u_TexLeft, uv);\n  \t} else if (fs_Translate.z == 0.04) {\n  \t\treturn texture(u_TexRight, uv);\n  \t} else if (fs_Col[3] == 0.1) {\n  \t\treturn texture(u_TexRock, uv);\n  \t} else if (fs_Col[3] == 0.2) {\n  \t\treturn texture(u_TexEnd, uv);\n  \t} else {\n  \t\treturn texture(u_TexIce, uv);\n  \t}\n}\n\nvoid main() {\n    out_Col = getTextureColor();\n}"
+module.exports = "#version 300 es\nprecision highp float;\n\nuniform sampler2D u_TexUp;\nuniform sampler2D u_TexRight;\nuniform sampler2D u_TexDown;\nuniform sampler2D u_TexLeft;\nuniform sampler2D u_TexIce;\nuniform sampler2D u_TexRock;\nuniform sampler2D u_TexEnd;\n\nin vec4 fs_Col;\nin vec4 fs_Pos;\nin vec3 fs_Translate;\n\nout vec4 out_Col;\n\nvec4 getTextureColor() {\n\tvec2 uv = fs_Pos.xy + vec2(0.5);\n  \tuv.y = 1.0 - uv.y;\n\n  \tif (fs_Col[3] == 0.01) {\n  \t\treturn texture(u_TexUp, uv);\n  \t} else if (fs_Col[3] == 0.02) {\n  \t\treturn texture(u_TexDown, uv);\n  \t} else if (fs_Col[3] == 0.03) {\n  \t\treturn texture(u_TexLeft, uv);\n  \t} else if (fs_Col[3] == 0.04) {\n  \t\treturn texture(u_TexRight, uv);\n  \t} else if (fs_Col[3] == 0.1) {\n  \t\treturn texture(u_TexRock, uv);\n  \t} else if (fs_Col[3] == 0.2) {\n  \t\treturn texture(u_TexEnd, uv);\n  \t} else {\n  \t\treturn texture(u_TexIce, uv);\n  \t}\n}\n\nvoid main() {\n    out_Col = getTextureColor();\n}"
 
 /***/ }),
 /* 75 */

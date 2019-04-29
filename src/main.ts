@@ -116,7 +116,7 @@ function loadScene() {
 function updateScene(resizeFunc: any) {
   // Render Player and Update Camera
   let offsets: Float32Array = player.getPlayerVBO();
-  let colors: Float32Array = new Float32Array([1, 1, 1, 1]);
+  let colors: Float32Array = player.getPlayerColor();
   playerSprite.setInstanceVBOs(offsets, colors);
   playerSprite.setNumInstances(1);
 
@@ -152,6 +152,7 @@ function main() {
   camera = new Camera(vec3.fromValues(0, 0, 20), vec3.fromValues(0, 0, 0));
   const renderer = new OpenGLRenderer(canvas);
   renderer.setClearColor(0.2, 0.2, 0.2, 1);
+  gl.enable(gl.DEPTH_TEST);
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 

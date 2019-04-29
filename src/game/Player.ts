@@ -100,20 +100,26 @@ export default class Player {
 		let vbo: number[] = [];
 		vbo.push(this.position[0]);
 		vbo.push(this.position[1]);
-
-		if (this.lastKey == 'up') {
-			vbo.push(0.01);
-		} 
-		if (this.lastKey == 'down') {
-			vbo.push(0.02);
-		}
-		if (this.lastKey == 'left') {
-			vbo.push(0.03);
-		}
-		if (this.lastKey == 'right') {
-			vbo.push(0.04);
-		}
+		vbo.push(0.2);
 
 		return new Float32Array(vbo);
+	}
+
+	getPlayerColor() {
+		let offset: number = 0;
+		if (this.lastKey == 'up') {
+			offset = 0.01;
+		} 
+		if (this.lastKey == 'down') {
+			offset = 0.02;
+		}
+		if (this.lastKey == 'left') {
+			offset = 0.03;
+		}
+		if (this.lastKey == 'right') {
+			offset = 0.04;
+		}
+
+		return new Float32Array([1, 1, 1, offset]);
 	}
 }

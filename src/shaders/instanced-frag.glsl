@@ -19,13 +19,13 @@ vec4 getTextureColor() {
 	vec2 uv = fs_Pos.xy + vec2(0.5);
   	uv.y = 1.0 - uv.y;
 
-  	if (fs_Translate.z == 0.01) {
+  	if (fs_Col[3] == 0.01) {
   		return texture(u_TexUp, uv);
-  	} else if (fs_Translate.z == 0.02) {
+  	} else if (fs_Col[3] == 0.02) {
   		return texture(u_TexDown, uv);
-  	} else if (fs_Translate.z == 0.03) {
+  	} else if (fs_Col[3] == 0.03) {
   		return texture(u_TexLeft, uv);
-  	} else if (fs_Translate.z == 0.04) {
+  	} else if (fs_Col[3] == 0.04) {
   		return texture(u_TexRight, uv);
   	} else if (fs_Col[3] == 0.1) {
   		return texture(u_TexRock, uv);
