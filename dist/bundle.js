@@ -6110,13 +6110,13 @@ function loadScene() {
     // texRock = new Texture('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/rock.png', 0);
     // texEnd = new Texture('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/end.png', 0);
     // Uncomment to run locally
-    texUp = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../src/img/pikachu_up.png', 0);
-    texRight = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../src/img/pikachu_right.png', 0);
-    texDown = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../src/img/pikachu_down.png', 0);
-    texLeft = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../src/img/pikachu_left.png', 0);
-    texIce = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../src/img/ice.png', 0);
-    texRock = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../src/img/rock.png', 0);
-    texEnd = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('../src/img/end.png', 0);
+    texUp = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('./img/pikachu_up.png', 0);
+    texRight = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('./img/pikachu_right.png', 0);
+    texDown = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('./img/pikachu_down.png', 0);
+    texLeft = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('./img/pikachu_left.png', 0);
+    texIce = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('./img/ice.png', 0);
+    texRock = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('./img/rock.png', 0);
+    texEnd = new __WEBPACK_IMPORTED_MODULE_9__rendering_gl_Texture__["a" /* default */]('./img/end.png', 0);
     loadGame();
 }
 function updateScene(resizeFunc) {
@@ -6152,8 +6152,6 @@ function main() {
     camera = new __WEBPACK_IMPORTED_MODULE_6__Camera__["a" /* default */](__WEBPACK_IMPORTED_MODULE_0_gl_matrix__["d" /* vec3 */].fromValues(0, 0, 20), __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["d" /* vec3 */].fromValues(0, 0, 0));
     const renderer = new __WEBPACK_IMPORTED_MODULE_5__rendering_gl_OpenGLRenderer__["a" /* default */](canvas);
     renderer.setClearColor(0.2, 0.2, 0.2, 1);
-    gl.enable(gl.DEPTH_TEST);
-    gl.blendFunc(gl.ONE, gl.ONE);
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     const instancedShader = new __WEBPACK_IMPORTED_MODULE_8__rendering_gl_ShaderProgram__["b" /* default */]([

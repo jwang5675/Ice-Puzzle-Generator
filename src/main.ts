@@ -112,13 +112,13 @@ function loadScene() {
   // texEnd = new Texture('https://raw.githubusercontent.com/jwang5675/Ice-Puzzle-Generator/master/img/end.png', 0);
 
   // Uncomment to run locally
-  texUp = new Texture('../src/img/pikachu_up.png', 0);
-  texRight = new Texture('../src/img/pikachu_right.png', 0);
-  texDown = new Texture('../src/img/pikachu_down.png', 0);
-  texLeft = new Texture('../src/img/pikachu_left.png', 0);
-  texIce = new Texture('../src/img/ice.png', 0);
-  texRock = new Texture('../src/img/rock.png', 0);
-  texEnd = new Texture('../src/img/end.png', 0);
+  texUp = new Texture('./img/pikachu_up.png', 0);
+  texRight = new Texture('./img/pikachu_right.png', 0);
+  texDown = new Texture('./img/pikachu_down.png', 0);
+  texLeft = new Texture('./img/pikachu_left.png', 0);
+  texIce = new Texture('./img/ice.png', 0);
+  texRock = new Texture('./img/rock.png', 0);
+  texEnd = new Texture('./img/end.png', 0);
 
   loadGame();
 }
@@ -162,8 +162,6 @@ function main() {
   camera = new Camera(vec3.fromValues(0, 0, 20), vec3.fromValues(0, 0, 0));
   const renderer = new OpenGLRenderer(canvas);
   renderer.setClearColor(0.2, 0.2, 0.2, 1);
-  gl.enable(gl.DEPTH_TEST);
-  gl.blendFunc(gl.ONE, gl.ONE);
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
